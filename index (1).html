@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5 AM Club – Lassi Challenge</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥛</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--night:#1c1b3d;--dawn:#ff7aa2;--sun:#ffb703;--milk:#fff8ee;--ok:#2ec27e;--bad:#ff4d5e;--card:rgba(255,248,238,.08);--line:rgba(255,248,238,.16)}
+*{box-sizing:border-box}
+html{background:var(--night)}
+body{margin:0;min-height:100vh;font-family:"Baloo 2",system-ui,sans-serif;color:var(--milk);background:linear-gradient(180deg,#1c1b3d 0%,#4a2c63 45%,#c4506f 80%,#ffb703 120%) fixed;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+main{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:clamp(2rem,7vw,3.2rem);font-weight:800;margin:8px 0 0;line-height:1.05}
+.sub{margin:6px 0 22px;opacity:.85;font-size:1.05rem}
+.sun{display:inline-block;animation:rise 1.2s ease-out both}
+@keyframes rise{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.sun{animation:none}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px;backdrop-filter:blur(6px)}
+.name{font-size:1.45rem;font-weight:800;margin:0}
+.stats{display:flex;gap:14px;margin:6px 0 12px;font-size:.95rem;opacity:.9}
+.btns{display:flex;gap:10px}
+button{font:inherit;font-weight:700;border:2px solid var(--line);background:transparent;color:var(--milk);border-radius:14px;padding:10px 12px;cursor:pointer;flex:1;font-size:1rem}
+button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+button.yes.on{background:var(--ok);border-color:var(--ok);color:#062b19}
+button.no.on{background:var(--bad);border-color:var(--bad);color:#3a0008}
+.owed{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:12px;min-height:44px;font-size:.95rem}
+.owed svg{width:30px;height:42px}
+.alert{margin:16px 0 0;padding:14px 16px;border-radius:20px;background:var(--milk);color:#4a2c63;display:flex;gap:14px;align-items:center;font-weight:700;font-size:1.1rem}
+.alert svg{width:64px;height:90px;flex:none}
+h2{font-size:1.3rem;margin:28px 0 10px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:9px 6px;text-align:center;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+td.d{opacity:.85}
+.t{font-size:1.4rem}
+.wait{opacity:.45}
+.sync{font-size:.85rem;opacity:.7;margin-top:18px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="lassi" viewBox="0 0 100 140">
+    <path d="M62 6 L52 62" stroke="#ff7aa2" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M20 30 L80 30 L72 125 Q71 133 64 133 L36 133 Q29 133 28 125 Z" fill="#fff" fill-opacity=".35" stroke="#fff8ee" stroke-width="3"/>
+    <path d="M23 50 L77 50 L72 123 Q71 129 64 129 L36 129 Q29 129 28 123 Z" fill="#fff3d6"/>
+    <ellipse cx="50" cy="50" rx="27" ry="8" fill="#fffaf0"/>
+    <circle cx="40" cy="48" r="3" fill="#7bc96f"/><circle cx="52" cy="46" r="3" fill="#7bc96f"/><circle cx="60" cy="50" r="2.5" fill="#7bc96f"/>
+    <path d="M36 52 q4 3 8 0 M54 52 q4 3 8 0" stroke="#ffb703" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="40" cy="82" r="4" fill="#3b2a50"/><circle cx="60" cy="82" r="4" fill="#3b2a50"/>
+    <path d="M42 96 q8 9 16 0" stroke="#3b2a50" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <circle cx="33" cy="92" r="4" fill="#ff7aa2" fill-opacity=".6"/><circle cx="67" cy="92" r="4" fill="#ff7aa2" fill-opacity=".6"/>
+    <path d="M30 40 L32 120" stroke="#fff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+</svg>
+<main>
+  <div class="sun" style="font-size:2.2rem">🌅⏰🏍️🧘</div>
+  <h1>5 AM Club</h1>
+  <p class="sub">Subah 5 baje uthna, 5 km bike, meditation. Jo skip kare, <b>Tony Lassi</b> pilayega 🥛</p>
+  <div id="today" class="grid"></div>
+  <div id="alert"></div>
+  <h2>Pichhle din</h2>
+  <table><thead><tr><th>Din</th><th>Param Singh 🦁</th><th>Kishan Jaiswal 🔥</th></tr></thead><tbody id="hist"></tbody></table>
+  <p class="sync" id="sync"></p>
+</main>
+<script>
+// Dono dost ke beech sync chahiye? Firebase Realtime Database ka URL yaha paste karo
+// (bina trailing slash), jaise "https://xyz-default-rtdb.firebaseio.com". Khali chhodoge to sirf is browser me save hoga.
+const DB_URL = "";
+
+const KEY = "lassi-club-v1";
+const PLAYERS = [
+  {id: "p", name: "Param Singh", emoji: "🦁"},
+  {id: "k", name: "Kishan Jaiswal", emoji: "🔥"}
+];
+let days = {};
+try { days = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
+
+const pad = n => String(n).padStart(2, "0");
+const iso = d => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+const todayKey = () => iso(new Date());
+const label = k => new Date(k + "T00:00").toLocaleDateString("en-IN", {weekday: "short", day: "numeric", month: "short"});
+const glass = () => '<svg aria-hidden="true"><use href="#lassi"/></svg>';
+
+function save() { try { localStorage.setItem(KEY, JSON.stringify(days)); } catch (e) {} }
+
+function stats(id) {
+  let present = 0, missed = 0, streak = 0;
+  for (const k in days) { if (days[k][id] === true) present++; if (days[k][id] === false) missed++; }
+  const d = new Date();
+  if (days[iso(d)]?.[id] !== true) d.setDate(d.getDate() - 1);
+  while (days[iso(d)]?.[id] === true) { streak++; d.setDate(d.getDate() - 1); }
+  return {present, missed, streak};
+}
+
+function render() {
+  const t = todayKey(), now = days[t] || {};
+  document.getElementById("today").innerHTML = PLAYERS.map(p => {
+    const s = stats(p.id);
+    const glasses = s.missed ? glass().repeat(Math.min(s.missed, 5)) + (s.missed > 5 ? "<b>×" + s.missed + "</b>" : "") : "";
+    return `<section class="card"><h3 class="name">${p.name} ${p.emoji}</h3>
+      <div class="stats"><span>🔥 Streak: ${s.streak}</span><span>✅ ${s.present}</span><span>❌ ${s.missed}</span></div>
+      <div class="btns">
+        <button class="yes ${now[p.id] === true ? "on" : ""}" data-id="${p.id}" data-v="1" aria-pressed="${now[p.id] === true}">✅ Aaya</button>
+        <button class="no ${now[p.id] === false ? "on" : ""}" data-id="${p.id}" data-v="0" aria-pressed="${now[p.id] === false}">❌ Nahi</button>
+      </div>
+      <div class="owed">${s.missed ? glasses + "<span>" + s.missed + " lassi udhaar</span>" : "<span>Koi lassi udhaar nahi 😎</span>"}</div></section>`;
+  }).join("");
+
+  const missedToday = PLAYERS.filter(p => now[p.id] === false);
+  document.getElementById("alert").innerHTML = missedToday.length
+    ? `<div class="alert">${glass()}<div>Aaj ${missedToday.map(p => p.name + " " + p.emoji).join(" aur ")} ne chhutti maari! Tony Lassi ka order pakka 🥛</div></div>`
+    : "";
+
+  const keys = new Set([t]);
+  for (let i = 1; i <= 14; i++) { const d = new Date(); d.setDate(d.getDate() - i); keys.add(iso(d)); }
+  Object.keys(days).forEach(k => keys.add(k));
+  const cell = v => v === true ? '<span class="t">✅</span>' : v === false ? '<span class="t">❌</span>' : '<span class="wait">–</span>';
+  document.getElementById("hist").innerHTML = [...keys].sort().reverse().slice(0, 30).map(k =>
+    `<tr><td class="d">${k === t ? "Aaj" : label(k)}</td><td>${cell(days[k]?.p)}</td><td>${cell(days[k]?.k)}</td></tr>`).join("");
+  document.getElementById("sync").textContent = DB_URL ? "🌐 Online sync ON – dono ka data same dikhega." : "💾 Data sirf is browser me save hai (sync ke liye DB_URL set karo).";
+}
+
+async function pull() {
+  if (!DB_URL) return;
+  try {
+    const r = await fetch(DB_URL + "/days.json");
+    days = (await r.json()) || {};
+    save(); render();
+  } catch (e) {}
+}
+
+async function mark(id, v) {
+  const t = todayKey();
+  const cur = days[t]?.[id];
+  const next = cur === v ? null : v;
+  days[t] = days[t] || {};
+  if (next === null) delete days[t][id]; else days[t][id] = next;
+  if (!Object.keys(days[t]).length) delete days[t];
+  save(); render();
+  if (DB_URL) {
+    try { await fetch(DB_URL + "/days/" + t + "/" + id + ".json", {method: "PUT", body: JSON.stringify(next)}); } catch (e) {}
+  }
+}
+
+document.getElementById("today").addEventListener("click", e => {
+  const b = e.target.closest("button");
+  if (b) mark(b.dataset.id, b.dataset.v === "1");
+});
+
+render(); pull();
+if (DB_URL) setInterval(pull, 20000);
+</script>
+</body>
+</html>
